@@ -3,217 +3,173 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Organizador Financeiro</title>
+  <title>Contas a Pagar</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 p-4 md:p-8">
-  <div class="max-w-4xl mx-auto space-y-6">
+  <div class="max-w-3xl mx-auto space-y-6">
     
+    <!-- Cabeçalho -->
     <header class="text-center bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-      <h1 class="text-3xl font-bold text-gray-900">Meu Painel Financeiro</h1>
-      <p class="text-gray-500 text-sm mt-1">Controle de salários, bicos, fixos e parcelas</p>
+      <h1 class="text-3xl font-bold text-gray-900">Minhas Contas a Pagar</h1>
+      <p class="text-gray-500 text-sm mt-1">Acompanhe vencimentos, parcelas e pagamentos do mês</p>
     </header>
 
+    <!-- Cards de Resumo -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-gray-50 border border-gray-200 p-5 rounded-xl shadow-sm">
+        <span class="text-xs text-gray-500 font-semibold uppercase tracking-wide">Total de Contas</span>
+        <div id="totalContas" class="text-2xl font-bold text-gray-800 mt-1">R$ 0,00</div>
+      </div>
       <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl shadow-sm">
-        <span class="text-sm text-emerald-600 font-medium uppercase tracking-wide">Total Entradas</span>
-        <div id="totalEntradas" class="text-2xl font-bold text-emerald-700 mt-1">R$ 0,00</div>
+        <span class="text-xs text-emerald-600 font-semibold uppercase tracking-wide">Já Pago</span>
+        <div id="totalPago" class="text-2xl font-bold text-emerald-700 mt-1">R$ 0,00</div>
       </div>
       <div class="bg-rose-50 border border-rose-200 p-5 rounded-xl shadow-sm">
-        <span class="text-sm text-rose-600 font-medium uppercase tracking-wide">Total Saídas</span>
-        <div id="totalSaidas" class="text-2xl font-bold text-rose-700 mt-1">R$ 0,00</div>
-      </div>
-      <div class="bg-blue-50 border border-blue-200 p-5 rounded-xl shadow-sm">
-        <span class="text-sm text-blue-600 font-medium uppercase tracking-wide">Saldo Final</span>
-        <div id="saldoTotal" class="text-2xl font-bold text-blue-700 mt-1">R$ 0,00</div>
+        <span class="text-xs text-rose-600 font-semibold uppercase tracking-wide">Falta Pagar</span>
+        <div id="totalPendente" class="text-2xl font-bold text-rose-700 mt-1">R$ 0,00</div>
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-        <h2 class="text-lg font-bold text-emerald-600 mb-4 flex items-center gap-2">
-          <span>+</span> Adicionar Entrada
-        </h2>
-        <form id="formEntrada" class="space-y-4">
-          <div>
-            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Descrição</label>
-            <input type="text" id="descEntrada" placeholder="Ex: Salário, Hora Extra, Bico..." required class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Tipo</label>
-            <select id="tipoEntrada" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-              <option value="Salário">Salário Fixos</option>
-              <option value="Hora Extra">Hora Extra</option>
-              <option value="Serviço por Fora">Serviço por Fora (Bico)</option>
-            </select>
-          </div>
+    <!-- Formulário de Cadastro -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+      <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <span>+</span> Cadastrar Nova Conta
+      </h2>
+      <form id="formConta" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Nome da Conta / Descrição</label>
+          <input type="text" id="descConta" placeholder="Ex: Energia, Água, Celular, Máquina de Lavar" required class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div>
             <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Valor (R$)</label>
-            <input type="number" step="0.01" id="valorEntrada" placeholder="0.00" required class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-          </div>
-          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-lg transition-colors">Cadastrar Ganho</button>
-        </form>
-      </div>
-
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-        <h2 class="text-lg font-bold text-rose-600 mb-4 flex items-center gap-2">
-          <span>-</span> Adicionar Gasto
-        </h2>
-        <form id="formSaida" class="space-y-4">
-          <div>
-            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Descrição</label>
-            <input type="text" id="descSaida" placeholder="Ex: Energia, Celular, Máquina..." required class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Tipo</label>
-              <select id="tipoSaida" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
-                <option value="Recorrente">Fixo (Energia/Net)</option>
-                <option value="Parcelado">Parcelado</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Parcela (ex: 1/10)</label>
-              <input type="text" id="parcelaSaida" placeholder="Mês a Mês" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
-            </div>
+            <input type="number" step="0.01" id="valorConta" placeholder="0.00" required class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Valor (R$)</label>
-            <input type="number" step="0.01" id="valorSaida" placeholder="0.00" required class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-rose-500 focus:outline-none">
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Dia do Vencimento</label>
+            <input type="number" id="vencimentoConta" min="1" max="31" placeholder="Ex: 10" required class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
           </div>
-          <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-medium py-2.5 rounded-lg transition-colors">Cadastrar Gasto</button>
-        </form>
-      </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Parcela (Opcional)</label>
+            <input type="text" id="parcelaConta" placeholder="Ex: 1/12 ou Recorrente" class="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+        </div>
 
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors">Adicionar Conta</button>
+      </form>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-        <h3 class="text-md font-bold text-gray-800 mb-3">Ganhos do Mês</h3>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm text-gray-600">
-            <thead class="bg-gray-50 text-xs uppercase text-gray-500 border-b">
-              <tr>
-                <th class="p-2">Nome</th>
-                <th class="p-2">Tipo</th>
-                <th class="p-2">Valor</th>
-                <th class="p-2">Ação</th>
-              </tr>
-            </thead>
-            <tbody id="tabelaEntradas" class="divide-y divide-gray-100"></tbody>
-          </table>
-        </div>
+    <!-- Tabela de Contas -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+      <h3 class="text-md font-bold text-gray-800 mb-4">Minhas Contas Cadastradas</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-600">
+          <thead class="bg-gray-50 text-xs uppercase text-gray-500 border-b">
+            <tr>
+              <th class="p-3">Conta</th>
+              <th class="p-3">Vencimento</th>
+              <th class="p-3">Valor</th>
+              <th class="p-3">Status</th>
+              <th class="p-3 text-center">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="tabelaContas" class="divide-y divide-gray-100"></tbody>
+        </table>
       </div>
-
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-        <h3 class="text-md font-bold text-gray-800 mb-3">Gastos e Parcelas</h3>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm text-gray-600">
-            <thead class="bg-gray-50 text-xs uppercase text-gray-500 border-b">
-              <tr>
-                <th class="p-2">Nome</th>
-                <th class="p-2">Info</th>
-                <th class="p-2">Valor</th>
-                <th class="p-2">Ação</th>
-              </tr>
-            </thead>
-            <tbody id="tabelaSaidas" class="divide-y divide-gray-100"></tbody>
-          </table>
-        </div>
-      </div>
-
     </div>
 
   </div>
 
+  <!-- Lógica da Aplicação -->
   <script>
-    let transacoes = JSON.parse(localStorage.getItem('financas')) || [];
+    let contas = JSON.parse(localStorage.getItem('contas_pagar')) || [];
 
-    const formEntrada = document.getElementById('formEntrada');
-    const formSaida = document.getElementById('formSaida');
+    const formConta = document.getElementById('formConta');
 
-    formEntrada.addEventListener('submit', (e) => {
+    formConta.addEventListener('submit', (e) => {
       e.preventDefault();
-      adicionarTransacao({
-        id: Date.now(),
-        tipoGeral: 'entrada',
-        desc: document.getElementById('descEntrada').value,
-        categoria: document.getElementById('tipoEntrada').value,
-        valor: parseFloat(document.getElementById('valorEntrada').value)
-      });
-      formEntrada.reset();
-    });
-
-    formSaida.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const tipo = document.getElementById('tipoSaida').value;
-      const parcela = document.getElementById('parcelaSaida').value;
+      const parcela = document.getElementById('parcelaConta').value;
       
-      adicionarTransacao({
+      const novaConta = {
         id: Date.now(),
-        tipoGeral: 'saida',
-        desc: document.getElementById('descSaida').value,
-        categoria: tipo === 'Parcelado' && parcela ? `Parcela ${parcela}` : 'Fixo',
-        valor: parseFloat(document.getElementById('valorSaida').value)
-      });
-      formSaida.reset();
+        desc: document.getElementById('descConta').value,
+        valor: parseFloat(document.getElementById('valorConta').value),
+        vencimento: document.getElementById('vencimentoConta').value,
+        info: parcela ? `Parcela ${parcela}` : 'Mensal',
+        paga: false
+      };
+
+      contas.push(novaConta);
+      atualizarDados();
+      formConta.reset();
     });
 
-    function adicionarTransacao(item) {
-      transacoes.push(item);
+    function alternarStatus(id) {
+      contas = contas.map(conta => {
+        if (conta.id === id) {
+          return { ...conta, paga: !conta.paga };
+        }
+        return conta;
+      });
       atualizarDados();
     }
 
-    function removerTransacao(id) {
-      transacoes = transacoes.filter(item => item.id !== id);
+    function removerConta(id) {
+      contas = contas.filter(conta => conta.id !== id);
       atualizarDados();
     }
 
     function atualizarDados() {
-      localStorage.setItem('financas', JSON.stringify(transacoes));
+      localStorage.setItem('contas_pagar', JSON.stringify(contas));
       
-      const tbodyEntradas = document.getElementById('tabelaEntradas');
-      const tbodySaidas = document.getElementById('tabelaSaidas');
-      
-      tbodyEntradas.innerHTML = '';
-      tbodySaidas.innerHTML = '';
+      const tbody = document.getElementById('tabelaContas');
+      tbody.innerHTML = '';
 
-      let totalEntradas = 0;
-      let totalSaidas = 0;
+      let total = 0;
+      let totalPago = 0;
+      let totalPendente = 0;
 
-      transacoes.forEach(item => {
-        const tr = document.createElement('tr');
-        
-        if (item.tipoGeral === 'entrada') {
-          totalEntradas += item.valor;
-          tr.innerHTML = `
-            <td class="p-2 font-medium">${item.desc}</td>
-            <td class="p-2 text-xs"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">${item.categoria}</span></td>
-            <td class="p-2 font-semibold text-emerald-600">R$ ${item.valor.toFixed(2)}</td>
-            <td class="p-2"><button onclick="removerTransacao(${item.id})" class="text-rose-500 hover:text-rose-700 font-bold">✕</button></td>
-          `;
-          tbodyEntradas.appendChild(tr);
+      // Ordenar por dia de vencimento
+      contas.sort((a, b) => parseInt(a.vencimento) - parseInt(b.vencimento));
+
+      contas.forEach(conta => {
+        total += conta.valor;
+        if (conta.paga) {
+          totalPago += conta.valor;
         } else {
-          totalSaidas += item.valor;
-          tr.innerHTML = `
-            <td class="p-2 font-medium">${item.desc}</td>
-            <td class="p-2 text-xs"><span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full">${item.categoria}</span></td>
-            <td class="p-2 font-semibold text-rose-600">R$ ${item.valor.toFixed(2)}</td>
-            <td class="p-2"><button onclick="removerTransacao(${item.id})" class="text-rose-500 hover:text-rose-700 font-bold">✕</button></td>
-          `;
-          tbodySaidas.appendChild(tr);
+          totalPendente += conta.valor;
         }
+
+        const tr = document.createElement('tr');
+        tr.className = conta.paga ? 'bg-emerald-50/40' : '';
+        
+        tr.innerHTML = `
+          <td class="p-3 font-medium text-gray-900">
+            ${conta.desc}
+            <div class="text-xs text-gray-400 font-normal">${conta.info}</div>
+          </td>
+          <td class="p-3">Dia ${conta.vencimento}</td>
+          <td class="p-3 font-semibold text-gray-800">R$ ${conta.valor.toFixed(2)}</td>
+          <td class="p-3">
+            <span class="px-2 py-1 rounded-full text-xs font-semibold ${conta.paga ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+              ${conta.paga ? 'Pago' : 'Pendente'}
+            </span>
+          </td>
+          <td class="p-3 flex items-center justify-center gap-2">
+            <button onclick="alternarStatus(${conta.id})" class="px-3 py-1 rounded text-xs font-semibold ${conta.paga ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-emerald-600 text-white hover:bg-emerald-700'} transition-colors">
+              ${conta.paga ? 'Desfazer' : 'Pagar'}
+            </button>
+            <button onclick="removerConta(${conta.id})" class="text-rose-500 hover:text-rose-700 font-bold px-1">✕</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
       });
 
-      document.getElementById('totalEntradas').innerText = `R$ ${totalEntradas.toFixed(2)}`;
-      document.getElementById('totalSaidas').innerText = `R$ ${totalSaidas.toFixed(2)}`;
-      
-      const saldo = totalEntradas - totalSaidas;
-      const elSaldo = document.getElementById('saldoTotal');
-      elSaldo.innerText = `R$ ${saldo.toFixed(2)}`;
-      elSaldo.className = `text-2xl font-bold mt-1 ${saldo >= 0 ? 'text-blue-700' : 'text-rose-700'}`;
+      document.getElementById('totalContas').innerText = `R$ ${total.toFixed(2)}`;
+      document.getElementById('totalPago').innerText = `R$ ${totalPago.toFixed(2)}`;
+      document.getElementById('totalPendente').innerText = `R$ ${totalPendente.toFixed(2)}`;
     }
 
     // Carregar dados salvos ao abrir
